@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Agilist",
-    "description": "Agilist description TODO\n\nSome useful links:\n- [The team website](https://github.com/swagger-api/swagger-petstore)",
+    "description": "Some useful links:\n- [The team website](https://github.com/swagger-api/swagger-petstore)",
     "version": "0.1.0"
   },
   "tags": [
@@ -21,22 +21,25 @@
     {
       "name": "tickets",
       "description": "Everything related to tickets"
+    },
+    {
+      "name": "tags",
+      "description": "Everything related to tags"
     }
   ],
   "paths": {
-    "/user/register": {
+    "/api/user/byMail": {
       "post": {
         "tags": [
           "users"
         ],
-        "summary": "TODO ONLY A CONCEPT",
-        "description": "Everything about Boards",
+        "summary": "fetch user by e-mail address",
         "operationId": "registerUser",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/User"
+                "$ref": "#/components/schemas/UserbyMail"
               }
             }
           },
@@ -47,26 +50,17 @@
             "description": "Successful registration"
           },
           "400": {
-            "description": "Invalid attributes supplied",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/badUser"
-                }
-              }
-            }
+            "description": "User not found"
           }
         }
       }
     },
-    "/user": {
+    "/users": {
       "get": {
         "tags": [
           "users"
         ],
         "summary": "Fetch all users",
-        "description": "Fetch all users",
-        "operationId": "getUsers",
         "responses": {
           "200": {
             "description": "Successful response",
@@ -77,18 +71,49 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "User not found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "users"
+        ],
+        "summary": "Fetch specific user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Regex"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "User not found"
           }
         }
       }
     },
-    "/project": {
+    "/projects": {
       "get": {
         "tags": [
           "projects"
         ],
         "summary": "Fetch all projects",
-        "description": "Fetch all projects",
-        "operationId": "getProjects",
         "responses": {
           "200": {
             "description": "Successful response",
@@ -101,349 +126,87 @@
             }
           }
         }
-      }
-    },
-    "/project/{id}": {
-      "get": {
-        "tags": [
-          "projects"
-        ],
-        "summary": "Fetch project by it's ID",
-        "description": "Fetch project by it's ID",
-        "operationId": "getProjectID",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "schema": {
-              "type": "integer"
-            },
-            "required": true,
-            "description": "Numeric ID of the project to get"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Project"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "projects"
-        ],
-        "summary": "Update project by it's ID",
-        "description": "Update project by it's ID",
-        "operationId": "putProjectID",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "schema": {
-              "type": "integer"
-            },
-            "required": true,
-            "description": "Numeric ID of the project to update"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/editProject"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "projects"
-        ],
-        "summary": "Delete project by it's ID",
-        "description": "Delete project by it's ID",
-        "operationId": "DeleteProjectID",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "schema": {
-              "type": "integer"
-            },
-            "required": true,
-            "description": "Numeric ID of the project to delete"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response"
-          },
-          "400": {
-            "description": "Bad request"
-          }
-        }
-      }
-    },
-    "/board": {
-      "get": {
-        "tags": [
-          "boards"
-        ],
-        "summary": "Fetch all boards",
-        "description": "Fetch all boards",
-        "operationId": "getBoards",
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AllBoards"
-                }
-              }
-            }
-          }
-        }
       },
       "post": {
         "tags": [
-          "boards"
+          "projects"
         ],
-        "summary": "create new board",
-        "description": "create new board",
-        "operationId": "createBoard",
+        "summary": "Create project",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/newBoard"
+                "$ref": "#/components/schemas/project"
               }
             }
-          },
-          "required": true
+          }
         },
-        "responses": {
-          "200": {
-            "description": "Successful creation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/board"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/board/{id}": {
-      "get": {
-        "tags": [
-          "boards"
-        ],
-        "summary": "Fetch board by it's ID",
-        "description": "Fetch board by it's ID",
-        "operationId": "getBoardsID",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "schema": {
-              "type": "integer"
-            },
-            "required": true,
-            "description": "Numeric ID of the board to get"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AllBoards"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "boards"
-        ],
-        "summary": "Update board by it's ID",
-        "description": "Update board by it's ID",
-        "operationId": "updateBoardsID",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "schema": {
-              "type": "integer"
-            },
-            "required": true,
-            "description": "Numeric ID of the board to update"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/editBoard"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "boards"
-        ],
-        "summary": "Delete board by it's ID",
-        "description": "Delete board by it's ID",
-        "operationId": "deleteBoardsID",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "schema": {
-              "type": "integer"
-            },
-            "required": true,
-            "description": "Numeric ID of the board to delete"
-          }
-        ],
         "responses": {
           "200": {
             "description": "Successful response"
           },
           "400": {
-            "description": "Bad request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+            "description": "Unsuccesul response"
           }
         }
       }
     },
-    "/ticket": {
+    "/tag": {
       "get": {
         "tags": [
-          "tickets"
+          "tags"
         ],
-        "summary": "Fetch all tickets",
-        "description": "Fetch all tickets",
-        "operationId": "getTickets",
+        "summary": "Fetch all tags",
         "responses": {
           "200": {
             "description": "Successful response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AllTickets"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "tickets"
-        ],
-        "summary": "Create new ticket",
-        "description": "Create new ticket",
-        "operationId": "createTicket",
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/newTicket"
+                  "$ref": "#/components/schemas/Tag"
                 }
               }
             }
           },
           "400": {
-            "description": "Bad request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
+            "description": "Unsuccesful response"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "tags"
+        ],
+        "summary": "Fetch specific user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Tag"
               }
             }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          },
+          "400": {
+            "description": "Unsuccesful response"
           }
         }
       }
     },
-    "/ticket/{id}": {
+    "/ticket/{ticketId}": {
       "get": {
         "tags": [
           "tickets"
         ],
-        "summary": "Fetch ticket by it's ID",
-        "description": "Fetch ticket by it's ID",
-        "operationId": "getTicketID",
+        "summary": "Fetch ticket by id",
         "parameters": [
           {
             "in": "path",
-            "name": "id",
+            "name": "ticketId",
             "schema": {
               "type": "integer"
             },
@@ -463,14 +226,7 @@
             }
           },
           "400": {
-            "description": "Bad request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+            "description": "User not found"
           }
         }
       },
@@ -478,18 +234,366 @@
         "tags": [
           "tickets"
         ],
-        "summary": "Update ticket by it's ID",
-        "description": "Update ticket by it's ID",
-        "operationId": "updateTicketID",
+        "summary": "Update ticket by id",
         "parameters": [
           {
             "in": "path",
-            "name": "id",
+            "name": "ticketId",
             "schema": {
               "type": "integer"
             },
             "required": true,
-            "description": "Numeric ID of the ticket to update"
+            "description": "Numeric ID of the ticket to get"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TicketPUT"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          },
+          "400": {
+            "description": "User not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "tickets"
+        ],
+        "summary": "Delete ticket by id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "ticketId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the ticket to get"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          },
+          "400": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/ticket": {
+      "get": {
+        "tags": [
+          "tickets"
+        ],
+        "summary": "Fetch all tickets",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AllTickets"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "tickets"
+        ],
+        "summary": "Update ticket by id",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Ticket"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          },
+          "400": {
+            "description": "Unsuccesful response"
+          }
+        }
+      }
+    },
+    "/ticket/updateTickets": {
+      "put": {
+        "tags": [
+          "tickets"
+        ],
+        "summary": "Update tickets",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Ticket"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AllTickets"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "tickets"
+        ],
+        "summary": "Update ticket by id",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Ticket"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          },
+          "400": {
+            "description": "Unsuccesful response"
+          }
+        }
+      }
+    },
+    "/board": {
+      "post": {
+        "tags": [
+          "boards"
+        ],
+        "summary": "Create board",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/board"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful creation"
+          },
+          "400": {
+            "description": "Unsuccesful creation"
+          }
+        }
+      }
+    },
+    "/board/{boardId}": {
+      "get": {
+        "tags": [
+          "boards"
+        ],
+        "summary": "Get board by id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "boardId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the board to get"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful get",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AllBoards"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Board not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "boards"
+        ],
+        "summary": "Delete board by id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "boardId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the board to delete"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful delete"
+          },
+          "400": {
+            "description": "Board not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "boards"
+        ],
+        "summary": "Update board by id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "boardId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true,
+            "description": "Numeric ID of the ticket to get"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TicketPUT"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response"
+          },
+          "400": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/project/{boardId}/createBoard": {
+      "post": {
+        "tags": [
+          "projects"
+        ],
+        "summary": "Create board",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "boardId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/board"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful creation"
+          },
+          "400": {
+            "description": "Unsuccesful creation"
+          }
+        }
+      }
+    },
+    "/project/{boardId}/removeUsers": {
+      "put": {
+        "tags": [
+          "projects"
+        ],
+        "summary": "Remove users from board",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "boardId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Users"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful request"
+          },
+          "400": {
+            "description": "Unsuccesful request"
+          }
+        }
+      }
+    },
+    "/project/{boardId}/boards": {
+      "get": {
+        "tags": [
+          "projects"
+        ],
+        "summary": "Fetch all boards",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "boardId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
           }
         ],
         "responses": {
@@ -498,71 +602,38 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/editTicket"
+                  "$ref": "#/components/schemas/AllBoards"
                 }
               }
             }
           },
           "400": {
-            "description": "Bad request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "tickets"
-        ],
-        "summary": "Delete ticket by it's ID",
-        "description": "Delete ticket by it's ID",
-        "operationId": "deleteTicketID",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "schema": {
-              "type": "integer"
-            },
-            "required": true,
-            "description": "Numeric ID of the ticket to delete"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response"
-          },
-          "400": {
-            "description": "Bad request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+            "description": "Board not found"
           }
         }
       }
     },
-    "/user/login": {
-      "post": {
+    "/project/{boardId}/addUsers": {
+      "put": {
         "tags": [
-          "users"
+          "projects"
         ],
-        "summary": "TODO ONLY A CONCEPT",
-        "description": "Login a user to the app",
-        "operationId": "loginUser",
+        "summary": "Add users to board",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "boardId",
+            "schema": {
+              "type": "integer"
+            },
+            "required": true
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/loginUser"
+                "$ref": "#/components/schemas/Users"
               }
             }
           },
@@ -570,10 +641,10 @@
         },
         "responses": {
           "200": {
-            "description": "Successful login"
+            "description": "Successful request"
           },
           "400": {
-            "description": "Invalid login"
+            "description": "Unsuccesful request"
           }
         }
       }
@@ -619,10 +690,57 @@
           }
         }
       },
+      "Regex": {
+        "type": "object",
+        "properties": {
+          "searchTerm": {
+            "type": "string",
+            "example": "Josko"
+          }
+        }
+      },
+      "TicketPUT": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "635a4995e536e356577c3395"
+          }
+        }
+      },
+      "Users": {
+        "type": "object",
+        "properties": {
+          "users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IDs"
+            }
+          }
+        }
+      },
+      "IDs": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "635a4995e536e356577c3395"
+          }
+        }
+      },
       "AllUsers": {
         "type": "array",
         "items": {
           "$ref": "#/components/schemas/User"
+        }
+      },
+      "UserbyMail": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "email@host.com"
+          }
         }
       },
       "Project": {
@@ -660,19 +778,6 @@
             "type": "string",
             "format": "date-time",
             "example": "2022-10-27T09:04:21.916Z"
-          }
-        }
-      },
-      "editProject": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "example": 123
-          },
-          "name": {
-            "type": "string",
-            "example": "Name of the project"
           }
         }
       },
@@ -722,39 +827,27 @@
           }
         }
       },
-      "newBoard": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "example": "Board name"
-          },
-          "users": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "example": [
-                "635a4995e536e356577c3395",
-                "635a4995e536e356577c4475"
-              ]
-            }
-          },
-          "tickets": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "example": [
-                "635a4995e536e356577c1578",
-                "635a4995e536e356577c4206"
-              ]
-            }
-          }
-        }
-      },
       "AllBoards": {
         "type": "array",
         "items": {
           "$ref": "#/components/schemas/Board"
+        }
+      },
+      "Tag": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "example": "Label of the ticket"
+          },
+          "value": {
+            "type": "string",
+            "example": "Value of the ticket"
+          },
+          "type": {
+            "type": "string",
+            "example": "User"
+          }
         }
       },
       "Ticket": {
@@ -770,7 +863,7 @@
           },
           "content": {
             "type": "string",
-            "example": "Some content"
+            "example": "Content"
           },
           "priority": {
             "type": "number",
@@ -779,6 +872,9 @@
           "column": {
             "type": "number",
             "example": 5
+          },
+          "tags": {
+            "$ref": "#/components/schemas/Tag"
           },
           "createdBy": {
             "$ref": "#/components/schemas/User"
@@ -786,83 +882,13 @@
           "assignedTo": {
             "$ref": "#/components/schemas/User"
           },
-          "due_date": {
-            "type": "string",
-            "example": "2022-11-22T20:05:44.569Z"
-          },
-          "tags": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "example": [
-                "someTag1",
-                "someTag2",
-                "someTag3"
-              ]
-            }
-          },
           "__v": {
             "type": "number",
             "example": 123,
             "writeOnly": true
           },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time",
+          "due": {
             "example": "2022-10-27T09:04:21.916Z"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time",
-            "example": "2022-10-27T09:04:21.916Z"
-          }
-        }
-      },
-      "newTicket": {
-        "type": "object",
-        "properties": {
-          "_id": {
-            "type": "string",
-            "example": "635a4995e536e356577c3395"
-          },
-          "task": {
-            "type": "string",
-            "example": "Task name"
-          },
-          "content": {
-            "type": "string",
-            "example": "Some content"
-          },
-          "priority": {
-            "type": "number",
-            "example": 1
-          },
-          "column": {
-            "type": "number",
-            "example": 5
-          },
-          "user_id": {
-            "type": "string",
-            "example": "635a4995e536e356577c3395"
-          },
-          "board_id": {
-            "type": "string",
-            "example": "635a9ba59d72936afb10e7dc"
-          },
-          "due_date": {
-            "type": "string",
-            "example": "2022-11-22T20:05:44.569Z"
-          },
-          "tags": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "example": [
-                "someTag1",
-                "someTag2",
-                "someTag3"
-              ]
-            }
           }
         }
       },
@@ -872,110 +898,30 @@
           "$ref": "#/components/schemas/Ticket"
         }
       },
-      "editTicket": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "example": 123
-          },
-          "task": {
-            "type": "string",
-            "example": "Some description of task"
-          },
-          "priority": {
-            "type": "integer",
-            "example": 2
-          }
-        }
-      },
-      "badUser": {
-        "type": "object",
-        "properties": {
-          "username": {
-            "type": "string",
-            "example": "Missing"
-          },
-          "email": {
-            "type": "string",
-            "example": "In use"
-          },
-          "pwhash": {
-            "type": "string",
-            "example": "Missing"
-          }
-        }
-      },
-      "loginUser": {
-        "type": "object",
-        "properties": {
-          "username": {
-            "type": "string",
-            "example": "username"
-          },
-          "pwhash": {
-            "type": "string",
-            "example": "hashash"
-          }
-        }
-      },
       "board": {
         "type": "object",
         "properties": {
-          "boardName": {
+          "name": {
             "type": "string",
             "example": "boardName"
           },
-          "owner": {
-            "type": "string",
-            "example": 123
-          },
-          "variable": {
-            "type": "string",
-            "example": "TODO MORE ATTRIBUTES"
+          "users": {
+            "$ref": "#/components/schemas/User"
           }
         }
       },
-      "badBoard": {
+      "project": {
         "type": "object",
         "properties": {
-          "boardName": {
+          "name": {
             "type": "string",
-            "example": "Missing"
+            "example": "ProjectName"
           },
           "owner": {
-            "type": "string",
-            "example": "Not exist"
+            "$ref": "#/components/schemas/User"
           },
-          "variable": {
-            "type": "string",
-            "example": "TODO MORE ATTRIBUTES"
-          }
-        }
-      },
-      "editBoard": {
-        "type": "object",
-        "properties": {
-          "boardId": {
-            "type": "integer",
-            "example": 123
-          },
-          "boardName": {
-            "type": "string",
-            "example": "newName"
-          },
-          "variable": {
-            "type": "string",
-            "example": "TODO MORE ATTRIBUTES"
-          }
-        }
-      },
-      "Error": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "string",
-            "example": "Some error message"
+          "users": {
+            "$ref": "#/components/schemas/User"
           }
         }
       }
