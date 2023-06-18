@@ -314,7 +314,7 @@
         "tags": [
           "tickets"
         ],
-        "summary": "Update ticket by id",
+        "summary": "Create ticket",
         "requestBody": {
           "content": {
             "application/json": {
@@ -360,30 +360,6 @@
                 }
               }
             }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "tickets"
-        ],
-        "summary": "Update ticket by id",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Ticket"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful response"
-          },
-          "400": {
-            "description": "Unsuccesful response"
           }
         }
       }
